@@ -47,35 +47,16 @@ AS_IF([test x$rpi = xtrue], [
             AS="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-as"
             AR="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ar"
             RANLIB="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ranlib"
-            SYSROOT="${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot"
+            SYSROOT=" ${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot "
 ])
-
-CXXFLAGS="$CXXFLAGS \
--std=c++11 \
--pthread \
--Wall \
--Werror \
--Wextra \
--Wredundant-decls \
--Wcast-align \
--Wmissing-declarations \
--Wmissing-include-dirs \
--Winvalid-pch \
--Wredundant-decls \
--Wformat=2 \
--Wmissing-format-attribute \
--Wno-format-nonliteral \
--fvisibility=default \
--lstdc++ \
--larmadillo"
 
 #-lSoapySDR \
 #-lLimeSuite \
 
 AS_IF([test x$rpi = xtrue], [
-            CFLAGS+="--sysroot=${SYSROOT}"
-            CPPFLAGS+="--sysroot=${SYSROOT}"
-            CXXFLAGS+="--sysroot=${SYSROOT}"
+            CFLAGS+=" --sysroot=${SYSROOT} "
+            CPPFLAGS+=" --sysroot=${SYSROOT} "
+            CXXFLAGS+=" --sysroot=${SYSROOT} "
             CONFIG_OPTS=()
             CONFIG_OPTS+=("CFLAGS=${CFLAGS}")
             CONFIG_OPTS+=("CPPFLAGS=${CPPFLAGS}") CONFIG_OPTS+=("CXXFLAGS=${CXXFLAGS}")
@@ -95,5 +76,25 @@ AS_IF([test x$rpi = xtrue], [
             CONFIG_OPTS+=("PKG_CONFIG_SYSROOT=${SYSROOT}")
             CONFIG_OPTS+=("PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig")
 ])
+
+
+CXXFLAGS="$CXXFLAGS \
+-std=c++11 \
+-pthread \
+-Wall \
+-Werror \
+-Wextra \
+-Wredundant-decls \
+-Wcast-align \
+-Wmissing-declarations \
+-Wmissing-include-dirs \
+-Winvalid-pch \
+-Wredundant-decls \
+-Wformat=2 \
+-Wmissing-format-attribute \
+-Wno-format-nonliteral \
+-fvisibility=default \
+-lstdc++ \
+-larmadillo "
 
 AC_OUTPUT
