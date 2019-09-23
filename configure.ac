@@ -25,6 +25,18 @@ AC_CONFIG_FILES([
             src/Makefile
             ])
 
+# https://stackoverflow.com/questions/11898782/how-to-conditionally-compile-in-a-autotools-project?rq=1
+
+AC_ARG_ENABLE([rpi],
+[  --enable-rpi    Build for Raspberry Pi],
+[case "${enableval}" in
+yes) rpi=true ;;
+no)  rpi=false ;;
+*) AC_MSG_ERROR([bad value ${enableval} for --enable-rpi]) ;;
+esac],[rpi=false])
+AM_CONDITIONAL([RPI], [test x$rpi = xtrue])
+AS_IF([test x$rpi = xtrue], [
+
 PWD="/home/mats/projects"
 TOOLCHAIN_HOST="arm-linux-gnueabihf"
 TOOLCHAIN_PATH="${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin"
@@ -37,6 +49,8 @@ AR="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ar"
 RANLIB="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ranlib"
 
 SYSROOT="${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot"
+
+])
 
 CXXFLAGS="$CXXFLAGS \
 -std=c++11 \
@@ -55,6 +69,8 @@ CXXFLAGS="$CXXFLAGS \
 -Wno-format-nonliteral \
 -fvisibility=default \
 -lstdc++ "
+
+AS_IF([test x$rpi = xtrue], [
 
 CFLAGS+="--sysroot=${SYSROOT}"
 CPPFLAGS+="--sysroot=${SYSROOT}"
@@ -81,5 +97,7 @@ CONFIG_OPTS+=("PKG_CONFIG_LIBDIR=${SYSROOT}/usr/lib/arm-linux-gnueabihf/pkgconfi
 CONFIG_OPTS+=("PKG_CONFIG_SYSROOT=${SYSROOT}")
 
 CONFIG_OPTS+=("PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig")
+
+])
 
 AC_OUTPUT
