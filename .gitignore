@@ -96,9 +96,12 @@ src/beacon_test
 src/tag_test
 src/tx_test
 src/sniffer
+src/hello
 src/beacon_wittra_tag
 docs/apidocs
 docs/latex
 docs/*.stamp
 docs/Doxyfile
 .dir-locals.el
+*.guess
+*.sub
