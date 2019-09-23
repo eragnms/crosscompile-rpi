@@ -24,6 +24,20 @@ AC_CONFIG_FILES([
 			Makefile
             src/Makefile
             ])
+
+PWD="/home/mats/projects"
+TOOLCHAIN_HOST="arm-linux-gnueabihf"
+TOOLCHAIN_PATH="${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin"
+CPP="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-cpp"
+CC="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-gcc"
+CXX="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-g++"
+LD="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ld"
+AS="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-as"
+AR="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ar"
+RANLIB="${TOOLCHAIN_PATH}/${TOOLCHAIN_HOST}-ranlib"
+
+SYSROOT="${PWD}/rpi-tools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/arm-linux-gnueabihf/sysroot"
+
 CXXFLAGS="$CXXFLAGS \
 -std=c++11 \
 -pthread \
@@ -40,9 +54,32 @@ CXXFLAGS="$CXXFLAGS \
 -Wmissing-format-attribute \
 -Wno-format-nonliteral \
 -fvisibility=default \
--lSoapySDR \
--larmadillo \
--lstdc++ \
--lLimeSuite \
--lbladeRF"
+-lstdc++ "
+
+CFLAGS+="--sysroot=${SYSROOT}"
+CPPFLAGS+="--sysroot=${SYSROOT}"
+CXXFLAGS+="--sysroot=${SYSROOT}"
+
+CONFIG_OPTS=()
+CONFIG_OPTS+=("CFLAGS=${CFLAGS}")
+CONFIG_OPTS+=("CPPFLAGS=${CPPFLAGS}") CONFIG_OPTS+=("CXXFLAGS=${CXXFLAGS}")
+CONFIG_OPTS+=("LDFLAGS=${LDFLAGS}") CONFIG_OPTS+=("PKG_CONFIG_DIR=")
+CONFIG_OPTS+=("--host=${TOOLCHAIN_HOST}")
+CONFIG_OPTS+=("CPP=${CPP}")
+CONFIG_OPTS+=("CC=${CC}")
+CONFIG_OPTS+=("CXX=${CXX}")
+CONFIG_OPTS+=("LD=${LD}")
+CONFIG_OPTS+=("AS=${AS}")
+CONFIG_OPTS+=("AR=${AR}")
+CONFIG_OPTS+=("RANLIB=${RANLIB}")
+
+BUILD_PREFIX="${PWD}/tmp"
+CONFIG_OPTS+=("--prefix=${BUILD_PREFIX}")
+
+CONFIG_OPTS+=("PKG_CONFIG_DIR=")
+CONFIG_OPTS+=("PKG_CONFIG_LIBDIR=${SYSROOT}/usr/lib/arm-linux-gnueabihf/pkgconfig:${SYSROOT}/usr/share/pkgconfig")
+CONFIG_OPTS+=("PKG_CONFIG_SYSROOT=${SYSROOT}")
+
+CONFIG_OPTS+=("PKG_CONFIG_PATH=${BUILD_PREFIX}/lib/pkgconfig")
+
 AC_OUTPUT
