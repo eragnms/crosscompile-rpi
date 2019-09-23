@@ -26,6 +26,7 @@ AC_CONFIG_FILES([
             ])
 
 # https://stackoverflow.com/questions/11898782/how-to-conditionally-compile-in-a-autotools-project?rq=1
+# https://medium.com/@au42/the-useful-raspberrypi-cross-compile-guide-ea56054de187
 
 AC_ARG_ENABLE([rpi],
 [  --enable-rpi    Build for Raspberry Pi],
@@ -65,7 +66,11 @@ CXXFLAGS="$CXXFLAGS \
 -Wmissing-format-attribute \
 -Wno-format-nonliteral \
 -fvisibility=default \
--lstdc++ "
+-lstdc++ \
+-larmadillo"
+
+#-lSoapySDR \
+#-lLimeSuite \
 
 AS_IF([test x$rpi = xtrue], [
             CFLAGS+="--sysroot=${SYSROOT}"
