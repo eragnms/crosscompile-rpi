@@ -94,7 +94,7 @@ CXXFLAGS="$CXXFLAGS \
 -Wmissing-format-attribute \
 -Wno-format-nonliteral \
 -fvisibility=default \
--lstdc++ \
--larmadillo "
+-lstdc++ "
+#-larmadillo "
 
 AC_OUTPUT
